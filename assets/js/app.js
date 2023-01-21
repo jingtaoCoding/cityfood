@@ -2,8 +2,6 @@
 // Remove this line if you add a your own CSS build pipeline (e.g postcss).
 // import "../css/app.css"
 
-import "bootstrap"
-
 // If you want to use Phoenix channels, run `mix help phx.gen.channel`
 // to get started and then uncomment the line below.
 // import "./user_socket.js"
@@ -21,6 +19,8 @@ import "bootstrap"
 //     import "some-package"
 //
 
+import "bootstrap"
+
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
@@ -35,6 +35,10 @@ let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToke
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
+window.addEventListener("phx:page-loading-stop", info => {
+    BSN.initCallback(document.body)
+    NProgress.done()
+})
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()
