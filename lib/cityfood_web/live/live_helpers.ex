@@ -1,10 +1,9 @@
 defmodule CityfoodWeb.LiveHelpers do
   import Phoenix.LiveView
   import Phoenix.LiveView.Helpers
-  import  Phoenix.Component
+  import Phoenix.Component
 
   alias Phoenix.LiveView.JS
-
 
   @doc """
   Renders a live component inside a modal.

@@ -1,0 +1,60 @@
+<div class="food-truck-container">
+  <div class="title"> <h1>SF Food Trucks</h1></div>
+
+  <%= if @live_action in [:new, :edit] do %>
+    <.modal return_to={Routes.food_truck_index_path(@socket, :index)}>
+      <.live_component
+        module={CityfoodWeb.FoodTruckLive.FormComponent}
+        id={@food_truck.id || :new}
+        title={@page_title}
+        action={@live_action}
+        food_truck={@food_truck}
+        return_to={Routes.food_truck_index_path(@socket, :index)}
+      />
+    </.modal>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Dayorder</th>
+        <th>Dayofweekstr</th>
+        <th>locationid</th>
+        <th>start</th>
+        <th>end</th>
+        <th>cnn</th>
+        <th>latitude</th>
+        <th>longitude</th>
+        <th>lot</th>
+        <th>block</th>
+
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="food_trucks">
+      <%= for food_truck <- @food_trucks do %>
+        <tr id={"food_truck-#{food_truck.id}"}>
+          <td><%= live_redirect "#{food_truck.id}", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></td>
+          <td><%= food_truck.dayorder %></td>
+          <td><%= food_truck.dayofweekstr %></td>
+          <td><%= food_truck.locationid %></td>
+          <td><%= food_truck.start24 %></td>
+          <td><%= food_truck.end24 %></td>
+          <td><%= food_truck.cnn %></td>
+          <td><%= food_truck.latitude %></td>
+          <td><%= food_truck.longitude %></td>
+          <td><%= food_truck.lot %></td>
+          <td><%= food_truck.block %></td>
+          <td>
+            <%!-- <span><%= live_redirect "Show", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></span> --%>
+            <span><%= live_patch "Edit", to: Routes.food_truck_index_path(@socket, :edit, food_truck) %></span>
+            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: food_truck.id, data: [confirm: "Are you sure?"] %></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <span><%= live_patch "New Food truck", to: Routes.food_truck_index_path(@socket, :new) %></span>
+</div>

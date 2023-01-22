@@ -1,0 +1,24 @@
+<div>
+  <h2><%= @title %></h2>
+
+  <.form
+    let={f}
+    for={@changeset}
+    id="food_truck-form"
+    phx-target={@myself}
+    phx-change="validate"
+    phx-submit="save">
+  
+    <%= label f, :dayorder %>
+    <%= text_input f, :dayorder %>
+    <%= error_tag f, :dayorder %>
+  
+    <%= label f, :dayofweekstr %>
+    <%= text_input f, :dayofweekstr %>
+    <%= error_tag f, :dayofweekstr %>
+  
+    <div>
+      <%= submit "Save", phx_disable_with: "Saving..." %>
+    </div>
+  </.form>
+</div>

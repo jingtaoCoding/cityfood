@@ -1,0 +1,47 @@
+<h1>Show Food truck</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.food_truck_show_path(@socket, :show, @food_truck)}>
+    <.live_component
+      module={CityfoodWeb.FoodTruckLive.FormComponent}
+      id={@food_truck.id}
+      title={@page_title}
+      action={@live_action}
+      food_truck={@food_truck}
+      return_to={Routes.food_truck_show_path(@socket, :show, @food_truck)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li> <strong>ID:</strong> <%= @food_truck.id %>
+  </li>
+  <li> <strong>starttime:</strong> <%= @food_truck.starttime %>
+  </li>
+  <li> <strong>endtime:</strong> <%= @food_truck.endtime %>
+  </li>
+  <li> <strong>permit:</strong> <%= @food_truck.permit %>
+  </li>
+  <li> <strong>location:</strong> <%= @food_truck.location %>
+  </li>
+  <li> <strong>locationdesc:</strong> <%= @food_truck.locationdesc %>
+  </li>
+  <li> <strong>optionaltext:</strong> <%= @food_truck.optionaltext %>
+  </li>
+  <li> <strong>locationid:</strong> <%= @food_truck.locationid %>
+  </li>
+  <li><strong>Dayorder:</strong> <%= @food_truck.dayorder %>
+  </li>
+  <li><strong>Dayofweekstr:</strong><%= @food_truck.dayofweekstr %>
+  </li>
+  <li><strong>latitude:</strong><%= @food_truck.latitude %>
+  </li>
+  <li><strong>longitude:</strong><%= @food_truck.longitude %>
+  </li>
+  <li><strong>location_2:</strong><%= location2(@food_truck.location_2) %>
+  </li>
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.food_truck_show_path(@socket, :edit, @food_truck), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.food_truck_index_path(@socket, :index) %></span>
