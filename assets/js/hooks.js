@@ -37,7 +37,6 @@ Hooks.Map = {
       zoom: 12,
       center: myLatLng,
     })
-    // display trucks
     this.placeFoodTruckMarkers(map)
   },
 
@@ -49,10 +48,11 @@ Hooks.Map = {
 
   placeFoodTruckMarkers(map) {
     this.foodTrucks().forEach((foodTruck) => {
+
       const marker = new google.maps.Marker({
         position: { lat: parseFloat(foodTruck.latitude), lng: parseFloat(foodTruck.longitude) },
         map,
-        icon: "images/Icons-Land-Vista-Map-Markers-Map-Marker-Ball-Azure.48.png"
+        icon: (foodTruck.coldtruck == "N")? "images/icon-green-48.png" : "images/icon-blue-48.png",
         // icon: "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/16/Map-Marker-Ball-Azure-icon.png"
       })
 
@@ -77,6 +77,7 @@ Hooks.Map = {
       `<li>Lan/Lon: <button>${c.longitude}, ${c.latitude}</button> </li>`,
       `<li> Open: ${c.starttime}</li>`,
       `<li> Close: ${c.endtime} </li>`,
+      `<li> ColdTruck: ${c.coldtruck} </li>`,
       "</ul>"
     ].join("") 
   
@@ -113,7 +114,7 @@ Hooks.Map = {
     const searchedAddress = new google.maps.Marker({
       position: myLatLng,
       map,
-      icon: "/images/Icons-Land-Vista-Map-Markers-Map-Marker-Ball-Azure.48.png"
+      icon: "/images/icon-green.48.png"
     })
     searchedInfoWindow.open({
       anchor: searchedAddress,
