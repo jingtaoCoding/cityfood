@@ -8,7 +8,7 @@ defmodule Cityfood.FoodTest do
 
     import Cityfood.FoodFixtures
 
-    @invalid_attrs %{dayofweekstr: nil, dayorder: nil}
+    @invalid_attrs %{dayofweekstr: nil, city_id: nil}
 
     test "list_food_trucks/0 returns all food_trucks" do
       food_truck = food_truck_fixture()
@@ -21,7 +21,8 @@ defmodule Cityfood.FoodTest do
     end
 
     test "create_food_truck/1 with valid data creates a food_truck" do
-      valid_attrs = %{dayofweekstr: "some dayofweekstr", dayorder: "some dayorder"}
+      valid_attrs = %{city_id: 1, dayofweekstr: "some dayofweekstr", dayorder: "some dayorder", 
+      locationid: "id", coldtruck: "Y", latitude: "23", longitude: "23"}
 
       assert {:ok, %FoodTruck{} = food_truck} = Food.create_food_truck(valid_attrs)
       assert food_truck.dayofweekstr == "some dayofweekstr"
@@ -46,7 +47,7 @@ defmodule Cityfood.FoodTest do
     end
 
     test "update_food_truck/2 with invalid data returns error changeset" do
-      food_truck = food_truck_fixture()
+      food_truck = food_truck_fixture(%{city_id: 1})
       assert {:error, %Ecto.Changeset{}} = Food.update_food_truck(food_truck, @invalid_attrs)
       assert food_truck == Food.get_food_truck!(food_truck.id)
     end

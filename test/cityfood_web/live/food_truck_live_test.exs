@@ -9,7 +9,7 @@ defmodule CityfoodWeb.FoodTruckLiveTest do
   @invalid_attrs %{dayofweekstr: nil, dayorder: nil}
 
   defp create_food_truck(_) do
-    food_truck = food_truck_fixture()
+    food_truck = food_truck_fixture() |> IO.inspect()
     %{food_truck: food_truck}
   end
 

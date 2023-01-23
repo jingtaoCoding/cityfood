@@ -64,21 +64,18 @@ defmodule Cityfood.Food.FoodTruck do
       :city_id,
       :locationid,
       :coldtruck,
-      :applicant,
-      :x,
-      :y,
       :latitude,
       :longitude
     ])
   end
 
   defp cast_location_2(changeset, attrs) do
-    loc2 = attrs["location_2"]
+    loc2 = attrs["location_2"] || attrs[:location_2]
 
     location_2 = %{
-      human_address: loc2["human_address"],
-      latitude: loc2["latitude"],
-      longitude: loc2["longitude"]
+      "human_address"=> loc2["human_address"] ,
+      "latitude"=> loc2["latitude"] ,
+      "longitude"=> loc2["longitude"]
     }
 
     put_change(changeset, :location_2, location_2)
