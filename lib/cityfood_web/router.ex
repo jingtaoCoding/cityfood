@@ -17,20 +17,18 @@ defmodule CityfoodWeb.Router do
   scope "/", CityfoodWeb do
     pipe_through :browser
 
-    get "/", FoodTruckLive.Index, :index
+    live "/", FoodTruckLive.Index, :index
+    live "/food_trucks", FoodTruckLive.Index, :index
+    live "/food_trucks/new", FoodTruckLive.Index, :new
+    live "/food_trucks/:id/edit", FoodTruckLive.Index, :edit
+    live "/food_trucks/:id", FoodTruckLive.Show, :show
+    live "/food_trucks/:id/show/edit", FoodTruckLive.Show, :edit
 
     live "/cities", CityLive.Index, :index
     live "/cities/new", CityLive.Index, :new
     live "/cities/:id/edit", CityLive.Index, :edit
     live "/cities/:id", CityLive.Show, :show
     live "/cities/:id/show/edit", CityLive.Show, :edit
-
-    live "/food_trucks", FoodTruckLive.Index, :index
-    live "/food_trucks/new", FoodTruckLive.Index, :new
-    live "/food_trucks/:id/edit", FoodTruckLive.Index, :edit
-
-    live "/food_trucks/:id", FoodTruckLive.Show, :show
-    live "/food_trucks/:id/show/edit", FoodTruckLive.Show, :edit
   end
 
   # Other scopes may use custom stacks.
