@@ -18,7 +18,8 @@ defmodule CityfoodWeb.FoodTruckLive.Show do
 
   defp page_title(:show), do: "Show Food truck"
   defp page_title(:edit), do: "Edit Food truck"
-  def location2(location2)do
+
+  def location2(location2) do
     Jason.encode!(location2)
   end
 end

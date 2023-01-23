@@ -6,7 +6,15 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :food_trucks, list_food_trucks())}
+    food_trucks = Food.list_food_trucks()
+    # food_trucks =[]
+    key = Application.get_env(:geocoder, :worker)[:key]
+
+    {:ok,
+     socket
+     |> assign(:food_trucks, food_trucks)
+     |> assign(:view, "map_view")
+     |> assign(:key, key)}
   end
 
   @impl true
@@ -40,7 +48,52 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
     {:noreply, assign(socket, :food_trucks, list_food_trucks())}
   end
 
+  @impl true
+  def handle_event("change-view", %{"view" => view}, socket) do
+    {:noreply, assign(socket, :view, view)}
+  end
+
   defp list_food_trucks do
     Food.list_food_trucks()
+  end
+
+  def show(target_view, current_view) do
+    case target_view do
+      ^current_view -> "visible"
+      _ -> "hidden"
+    end
+  end
+
+  def format(data_list) do
+    data_list
+    |> Enum.map(
+      &(&1
+        |> Map.from_struct()
+        |> Map.take([
+          :city_id,
+          # :dayorder,
+          # :dayofweekstr,
+          :starttime,
+          :endtime,
+          # :permit,
+          # :location,
+          # :locationdesc,
+          # :optionaltext,
+          :locationid,
+          # :start24,
+          # :end24,
+          # :cnn,
+          # :block,
+          # :lot,
+          :coldtruck,
+          :applicant,
+          # :x,
+          # :y,
+          :latitude,
+          :longitude,
+          :location_2
+        ]))
+    )
+    |> Jason.encode!()
   end
 end

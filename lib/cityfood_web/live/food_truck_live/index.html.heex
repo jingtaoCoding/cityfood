@@ -1,60 +1,100 @@
 <div class="food-truck-container">
-  <div class="title"> <h1>SF Food Trucks</h1></div>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-2">
+    <div class="title"> <h1>SF Food Trucks</h1></div>
+    <div class="mb-md-3 btn-group">
+      <form for="selectview">
+        <select id="selectview" name="view" phx-change="change-view" class="form-select form-select-lg pb-1" aria-label=".form-select-lg example">
+          <%=for x <- ["list_view", "map_view"] do %>
+            <%= if x == @view do%>
+            <option class="dropdown-item" value={x} selected ><%= x %></option>
+            <%else %>
+            <option class="dropdown-item" value={x} ><%= x %></option>
+            <%end %>
+          <%end %>
+        </select>
+      </form>
+    </div>
+  </div>
 
-  <%= if @live_action in [:new, :edit] do %>
-    <.modal return_to={Routes.food_truck_index_path(@socket, :index)}>
-      <.live_component
-        module={CityfoodWeb.FoodTruckLive.FormComponent}
-        id={@food_truck.id || :new}
-        title={@page_title}
-        action={@live_action}
-        food_truck={@food_truck}
-        return_to={Routes.food_truck_index_path(@socket, :index)}
-      />
-    </.modal>
-  <% end %>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        ColdTruck
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Y</a></li>
+        <li><a class="dropdown-item" href="#">N</a></li>
+      </ul>
+    </div>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Dayorder</th>
-        <th>Dayofweekstr</th>
-        <th>locationid</th>
-        <th>start</th>
-        <th>end</th>
-        <th>cnn</th>
-        <th>latitude</th>
-        <th>longitude</th>
-        <th>lot</th>
-        <th>block</th>
+  <div class={show(@view, "map_view")}>  
+    todo: show a map-view of SF city 
+    <div id="map-container">
+      <div id="map" phx-update="ignore" phx-hook="Map" data-food_trucks={format(@food_trucks)} data-search_address_lat_lng={nil}></div>
+    </div>
+  </div>
 
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="food_trucks">
-      <%= for food_truck <- @food_trucks do %>
-        <tr id={"food_truck-#{food_truck.id}"}>
-          <td><%= live_redirect "#{food_truck.id}", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></td>
-          <td><%= food_truck.dayorder %></td>
-          <td><%= food_truck.dayofweekstr %></td>
-          <td><%= food_truck.locationid %></td>
-          <td><%= food_truck.start24 %></td>
-          <td><%= food_truck.end24 %></td>
-          <td><%= food_truck.cnn %></td>
-          <td><%= food_truck.latitude %></td>
-          <td><%= food_truck.longitude %></td>
-          <td><%= food_truck.lot %></td>
-          <td><%= food_truck.block %></td>
-          <td>
-            <%!-- <span><%= live_redirect "Show", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></span> --%>
-            <span><%= live_patch "Edit", to: Routes.food_truck_index_path(@socket, :edit, food_truck) %></span>
-            <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: food_truck.id, data: [confirm: "Are you sure?"] %></span>
-          </td>
+  <div class={show(@view, "list_view")}>
+    <%= if @live_action in [:new, :edit] do %>
+      <.modal return_to={Routes.food_truck_index_path(@socket, :index)}>
+        <.live_component
+          module={CityfoodWeb.FoodTruckLive.FormComponent}
+          id={@food_truck.id || :new}
+          title={@page_title}
+          action={@live_action}
+          food_truck={@food_truck}
+          return_to={Routes.food_truck_index_path(@socket, :index)}
+        />
+      </.modal>
+    <% end %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Dayorder</th>
+          <th>Dayofweekstr</th>
+          <th>locationid</th>
+          <th>start</th>
+          <th>end</th>
+          <th>cnn</th>
+          <th>latitude</th>
+          <th>longitude</th>
+          <th>lot</th>
+          <th>block</th>
+          <th>coldtruck</th>
+          <th>Actions</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <span><%= live_patch "New Food truck", to: Routes.food_truck_index_path(@socket, :new) %></span>
+      </thead>
+      <tbody id="food_trucks">
+        <%= for food_truck <- @food_trucks do %>
+          <tr id={"food_truck-#{food_truck.id}"}>
+            <td><%= live_redirect "#{food_truck.id}", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></td>
+            <td><%= food_truck.dayorder %></td>
+            <td><%= food_truck.dayofweekstr %></td>
+            <td><%= food_truck.locationid %></td>
+            <td><%= food_truck.start24 %></td>
+            <td><%= food_truck.end24 %></td>
+            <td><%= food_truck.cnn %></td>
+            <td><%= food_truck.latitude %></td>
+            <td><%= food_truck.longitude %></td>
+            <td><%= food_truck.lot %></td>
+            <td><%= food_truck.block %></td>
+            <td><%= food_truck.coldtruck %></td>
+            <td>
+              <%!-- <span><%= live_redirect "Show", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></span> --%>
+              <span><%= live_patch "Edit", to: Routes.food_truck_index_path(@socket, :edit, food_truck) %></span>
+              <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: food_truck.id, data: [confirm: "Are you sure?"] %></span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <span><%= live_patch "New Food truck", to: Routes.food_truck_index_path(@socket, :new) %></span>
+  </div>
 </div>
+
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=#{@key}&callback=initMap&v=weekly"
+  ></script>

@@ -50,7 +50,8 @@ defmodule Cityfood.MixProject do
       {:jason, "~> 1.2"},
       {:httpoison, "~> 1.8"},
       {:plug_cowboy, "~> 2.5"},
-      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev}
+      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev},
+      {:geocoder, "~> 1.1"}
     ]
   end
 

@@ -1,8 +1,23 @@
 .food-truck-container {
   // border: solid 2px red;
-  background-color: rgb(233, 221, 221);
+  // background-color: rgb(233, 221, 221);
 }
 
 .title {
   color: blue;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.hidden {
+  height: 0;
+  visibility: hidden;
+}
+
+#map {
+    height: 600px;
+    width: 100%;
+    border: solid 2px red;
 }

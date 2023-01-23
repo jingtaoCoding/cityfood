@@ -59,11 +59,9 @@ defmodule Cityfood.Food.FoodTruck do
       :longitude,
       :location_2
     ])
-    |> IO.inspect()
     |> cast_location_2(attrs)
-    |> IO.inspect()
     |> validate_required([
-      # :city_id,
+      :city_id,
       :locationid,
       :coldtruck,
       :applicant,
@@ -77,13 +75,11 @@ defmodule Cityfood.Food.FoodTruck do
   defp cast_location_2(changeset, attrs) do
     loc2 = attrs["location_2"]
 
-    location_2 =
-      %{
-        human_address: loc2["human_address"],
-        latitude: loc2["latitude"],
-        longitude: loc2["longitude"]
-      }
-      |> IO.inspect()
+    location_2 = %{
+      human_address: loc2["human_address"],
+      latitude: loc2["latitude"],
+      longitude: loc2["longitude"]
+    }
 
     put_change(changeset, :location_2, location_2)
   end
