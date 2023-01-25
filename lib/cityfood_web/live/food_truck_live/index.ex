@@ -24,17 +24,17 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
     city = Cities.get_city_by_name!(@default_city)
     cities = if connected?(socket), do: Cities.list_cities(), else: []
     food_trucks = if connected?(socket), do: list_food_trucks(), else: []
-    key = Application.get_env(:geocoder, :worker)[:key]
 
-    {:ok,
-     socket
-     |> assign(:city, city)
-     |> assign(:cities, cities)
-     |> assign(:food_trucks, food_trucks)
-     |> assign(:view, "list_view")
-     |> assign(:cols, @cols)
-     |> assign(:filters, @filters)
-     |> assign(:key, key)}
+    {
+      :ok,
+      socket
+      |> assign(:city, city)
+      |> assign(:cities, cities)
+      |> assign(:food_trucks, food_trucks)
+      |> assign(:view, "list_view")
+      |> assign(:cols, @cols)
+      |> assign(:filters, @filters)
+    }
   end
 
   @impl true
@@ -73,31 +73,29 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
   end
 
   def handle_event("filters", params, socket) do
-    {city_id, filters} = params |> Utils.compact() |> Map.pop("city")
+    {_target, params} = Map.pop(params, "_target")
+    filters = Map.merge(socket.assigns.filters, params |> Utils.atom_map())
+    city = Cities.get_city_by_name!(filters.city)
+    params = filters |> Map.put(:city_id, city.id) |> Utils.compact()
 
-    if is_nil(city_id) do
-      city_id = socket.assigns.city.id
-      filters = Map.put(filters, "city", city_id)
-      {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
-    else
-      city_id = String.to_integer(city_id)
-      city = city = Cities.get_city!(city_id) |> IO.inspect()
-      
-      filters = Map.put(filters, "city", city_id)
-      socket = assign(socket, :city, city)
-     {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
-    end
+    socket =
+      socket
+      |> assign(:city, city)
+      |> assign(:filters, filters)
+      |> assign(:food_trucks, list_food_trucks_with_filters(params))
 
-
+    {:noreply, socket}
   end
 
   def handle_event("clear", params, socket) do
     food_trucks = list_food_trucks()
 
-    {:noreply,
-     socket
-     |> assign(:food_trucks, food_trucks)
-     |> assign(:filters, @filters)}
+    socket =
+      socket
+      |> assign(:filters, @filters)
+      |> assign(:food_trucks, food_trucks)
+
+    {:noreply, socket}
   end
 
   defp list_food_trucks do
@@ -149,6 +147,11 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
   end
 
   def encode(city) do
-    city |> Map.from_struct() |> Map.delete(:__meta__) |> Jason.encode!() |> IO.inspect()
+    city |> Map.from_struct() |> Map.delete(:__meta__) |> Jason.encode!()
+  end
+
+  def map_api_src do
+    api_key = Application.get_env(:cityfood, :google_map)[:api_key]
+    "https://maps.googleapis.com/maps/api/js?key=#{api_key}&callback=initMap&v=weekly"
   end
 end

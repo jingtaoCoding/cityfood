@@ -29,10 +29,12 @@ defmodule Cityfood.Food do
     |> Repo.all()
   end
 
-  defp filter_by_city(query, %{"city" => city_id}), do: where(query, [ft], ft.city_id == ^city_id)
+  defp filter_by_city(query, %{city_id: city_id}),
+    do: where(query, [ft], ft.city_id == ^city_id)
+
   defp filter_by_city(query, _), do: query
 
-  defp filter_by_coldtruck(query, %{"city" => city_id, "coldtruck" => coldtruck}) do
+  defp filter_by_coldtruck(query, %{city_id: city_id, coldtruck: coldtruck}) do
     query
     |> where([ft], ft.city_id == ^city_id)
     |> where([ft], ft.coldtruck == ^coldtruck)
@@ -40,7 +42,7 @@ defmodule Cityfood.Food do
 
   defp filter_by_coldtruck(query, _), do: query
 
-  defp filter_by_dayofweekstr(query, %{"dayofweekstr" => dayofweekstr}),
+  defp filter_by_dayofweekstr(query, %{dayofweekstr: dayofweekstr}),
     do: where(query, [ft], ft.dayofweekstr == ^dayofweekstr)
 
   defp filter_by_dayofweekstr(query, _), do: query

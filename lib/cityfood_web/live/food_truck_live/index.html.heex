@@ -31,10 +31,10 @@
              <%end %>
             <%=for city <-@cities do %>
               <%= if  @filters.city == city.name do %>
-                <option value={city.id} selected=""><%=city.name%></option>
+                <option value={city.name} selected=""><%=city.name%></option>
               <%else %>
-                <option value={city.id}><%=city.name%></option>
-              <%=end %>>
+                <option value={city.name}><%=city.name%></option>
+              <% end %>>
             <% end %>
           </select>
         </span>
@@ -101,7 +101,7 @@
       <thead>
         <tr>
           <th>Id</th>
-          <%= for {col,title} <- @cols do %>
+          <%= for {_col,title} <- @cols do %>
             <th> <%=title%> </th>
           <%end %>
           <%!-- <th>ID</th>
@@ -124,7 +124,7 @@
         <%= for food_truck <- @food_trucks do %>
           <tr id={"food_truck-#{food_truck.id}"}>
             <td style="min-width:70px"><%= live_redirect "#{food_truck.id}", to: Routes.food_truck_show_path(@socket, :show, food_truck) %></td>
-            <%= for {col,title} <- @cols do %>
+            <%= for {col,_title} <- @cols do %>
               <td style="min-width:70px"> <%=Map.get(food_truck, String.to_atom(col)) %></td>
             <%end %>
             <%!-- <td><%= food_truck.locationid %></td>
@@ -154,7 +154,5 @@
 
 </div>
 
-<script
-  src="https://maps.googleapis.com/maps/api/js?key=#{@key}&callback=initMap&v=weekly"
-></script>
-
+<%!-- load google map api script --%>
+<script async src={map_api_src()}></script>

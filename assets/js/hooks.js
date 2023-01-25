@@ -32,9 +32,9 @@ var Hooks = {}
 Hooks.Map = {
   // Initializes the Google Map
   initMap() {
-    const myLatLng = this.cityCenter;
+    const myLatLng = this.cityCenter();
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 11,
+      zoom: 12,
       center: myLatLng,
     })
     this.placeFoodTruckMarkers(map)
@@ -62,7 +62,7 @@ Hooks.Map = {
         // icon: "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/16/Map-Marker-Ball-Azure-icon.png"
       })
 
-      const infowindow = new google.maps.InfoWindow({ content: this.genInfo(foodTruck) })
+      const infowindow = new google.maps.InfoWindow({ content: this.genTruckMarkerInfo(foodTruck) })
 
       marker.addListener("click", () => {
         infowindow.open({
@@ -75,7 +75,7 @@ Hooks.Map = {
     })
   },
 
-  genInfo(foodTruck) {
+  genTruckMarkerInfo(foodTruck) {
     const c = foodTruck
     const str = [
       `<h2>${c.applicant}</h2>`,
@@ -93,52 +93,8 @@ Hooks.Map = {
     return str;
   },
 
-
-  //  Returns a latitude and longitude geocoded from the search address bar
-  //  @returns {LatLng}
-  searchAddressLatLng() { return new LatLng(JSON.parse(this.el.dataset.search_address_lat_lng)) },
-
-
-  //  Updates the Google Map when some address is searched
-
-  searchMap() {
-    const myLatLng = this.searchAddressLatLng();
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 18,
-      center: myLatLng,
-    })
-    this.addSearchedAddressMarker(map, myLatLng)
-    this.placeFoodTruckMarkers(map)
-  },
-
-  //  Adds marker for an address entered in the search
-  addSearchedAddressMarker(map, myLatLng) {
-    const searchedInfoWindow = new google.maps.InfoWindow({
-      content: `Food nearby?`,
-    })
-    const searchedAddress = new google.maps.Marker({
-      position: myLatLng,
-      map,
-      icon: "/images/icon-green.48.png"
-    })
-    searchedInfoWindow.open({
-      anchor: searchedAddress,
-      map,
-      shouldFocus: false,
-    })
-    searchedAddress.addListener("click", () => {
-      searchedInfoWindow.open({
-        anchor: searchedAddress,
-        map,
-        shouldFocus: false,
-      })
-    })
-  },
-
-
   // Update 
   updateMapMarker(myLatLng) {
-    // this.initMap()
     const map = new google.maps.Map(document.getElementById("map"), {
       zoom: 12,
       center: myLatLng,
@@ -148,7 +104,6 @@ Hooks.Map = {
 
   //  Built in mounted method used to initilize the map
   //  Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
-
   mounted() {
     window.initMap = this.initMap()
   },

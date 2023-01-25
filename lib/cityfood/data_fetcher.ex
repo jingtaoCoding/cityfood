@@ -1,6 +1,5 @@
 defmodule Cityfood.DataFetcher do
   alias Cityfood.{Food, Cities}
-  alias Cityfood.Food.FoodTruck
 
   @url_sf_mobile_food_data_2023 "https://data.sfgov.org/resource/jjew-r69b.json"
   def get(url \\ @url_sf_mobile_food_data_2023) do

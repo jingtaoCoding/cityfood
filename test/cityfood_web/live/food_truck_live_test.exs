@@ -3,13 +3,15 @@ defmodule CityfoodWeb.FoodTruckLiveTest do
 
   import Phoenix.LiveViewTest
   import Cityfood.FoodFixtures
+  import Cityfood.CitiesFixtures
 
   @create_attrs %{city_id: 1, locationid: "123", applicant: "applicant"}
   @update_attrs %{city_id: 1, locationid: "456", applicant: "applicant-updated"}
   @invalid_attrs %{locationid: nil, applicant: nil}
 
   defp create_food_truck(_) do
-    food_truck = food_truck_fixture()
+    city = city_fixture(%{name: "San Francisco"})
+    food_truck = food_truck_fixture(%{city_id: city.id})
     %{food_truck: food_truck}
   end
 

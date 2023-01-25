@@ -13,4 +13,10 @@ defmodule CityFood.Utils do
   def nil_or_empty?(variable) when is_map(variable), do: variable == %{}
   def nil_or_empty?(variable) when is_tuple(variable), do: variable == {}
   def nil_or_empty?(_), do: false
+
+  def atom_map(map) when is_map(map) do
+    map
+    |> Enum.map(fn {key, val} -> {String.to_existing_atom(key), val} end)
+    |> Map.new()
+  end
 end

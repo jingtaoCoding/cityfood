@@ -68,6 +68,8 @@ config :cityfood, CityfoodWeb.Endpoint,
     ]
   ]
 
+config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
