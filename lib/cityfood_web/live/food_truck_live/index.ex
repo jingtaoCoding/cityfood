@@ -6,14 +6,14 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    food_trucks = Food.list_food_trucks()
-    # food_trucks =[]
+    IO.inspect(socket)
+    food_trucks = if connected?(socket), do: Food.list_food_trucks(), else: []
     key = Application.get_env(:geocoder, :worker)[:key]
 
     {:ok,
      socket
      |> assign(:food_trucks, food_trucks)
-     |> assign(:view, "map_view")
+     |> assign(:view, "list_view")
      |> assign(:key, key)}
   end
 

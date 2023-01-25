@@ -16,17 +16,14 @@ defmodule Cityfood.FoodFixtures do
         city_id: city.id,
         dayofweekstr: "some dayofweekstr",
         dayorder: "some dayorder",
-        locationid: "sdfsf",
+        locationid: "some-locationid",
         coldtruck: "Y",
         applicant: "someone",
         x: "x",
         y: "y",
         latitude: "32.3",
         longitude: "43",
-        location_2: %{ human_address: nil,
-                latitude: nil,
-                longitude: nil
-              }
+        location_2: %{human_address: nil, latitude: nil, longitude: nil}
       })
       |> Cityfood.Food.create_food_truck()
 

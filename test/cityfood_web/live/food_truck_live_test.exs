@@ -4,12 +4,12 @@ defmodule CityfoodWeb.FoodTruckLiveTest do
   import Phoenix.LiveViewTest
   import Cityfood.FoodFixtures
 
-  @create_attrs %{dayofweekstr: "some dayofweekstr", dayorder: "some dayorder"}
-  @update_attrs %{dayofweekstr: "some updated dayofweekstr", dayorder: "some updated dayorder"}
-  @invalid_attrs %{dayofweekstr: nil, dayorder: nil}
+  @create_attrs %{city_id: 1, locationid: "123", applicant: "applicant"}
+  @update_attrs %{city_id: 1, locationid: "456", applicant: "applicant-updated"}
+  @invalid_attrs %{locationid: nil, applicant: nil}
 
   defp create_food_truck(_) do
-    food_truck = food_truck_fixture() |> IO.inspect()
+    food_truck = food_truck_fixture()
     %{food_truck: food_truck}
   end
 
@@ -64,7 +64,7 @@ defmodule CityfoodWeb.FoodTruckLiveTest do
         |> follow_redirect(conn, Routes.food_truck_index_path(conn, :index))
 
       assert html =~ "Food truck updated successfully"
-      assert html =~ "some updated dayofweekstr"
+      assert html =~ "applicant-updated"
     end
 
     test "deletes food_truck in listing", %{conn: conn, food_truck: food_truck} do
@@ -104,7 +104,7 @@ defmodule CityfoodWeb.FoodTruckLiveTest do
         |> follow_redirect(conn, Routes.food_truck_show_path(conn, :show, food_truck))
 
       assert html =~ "Food truck updated successfully"
-      assert html =~ "some updated dayofweekstr"
+      assert html =~ "456"
     end
   end
 end

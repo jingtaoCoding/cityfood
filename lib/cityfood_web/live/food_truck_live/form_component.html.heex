@@ -9,16 +9,40 @@
     phx-change="validate"
     phx-submit="save">
 
-    <div class="mb-3">
-      <%= label f, :dayorder %>
-      <%= text_input f, :dayorder %>
-      <%= error_tag f, :dayorder %>
+    <div class="mb-2">
+      <%= label f, "city Id" %>
+      <%= text_input f, :city_id%>
+      <%= error_tag f, :city_id %>
+    </div>
+
+    <div class="mb-2">
+      <%= label f, :locationid %>
+      <%= text_input f, :locationid %>
+      <%= error_tag f, :locationid %>
+    </div>
+
+    <div class="mb-2">
+      <%= label f, :applicant %>
+      <%= text_input f, :applicant %>
+      <%= error_tag f, :applicant %>
+    </div>
+
+    <div class="mb-2">
+      <%= label f, :coldtruck %>
+      <%= text_input f, :coldtruck %>
+      <%= error_tag f, :coldtruck %>
     </div>
     
-    <div class="mb-3">
-      <%= label f, :dayofweekstr %>
-      <%= text_input f, :dayofweekstr %>
-      <%= error_tag f, :dayofweekstr %>
+    <div class="mb-2">
+      <%= label f, :latitude %>
+      <%= text_input f, :latitude %>
+      <%= error_tag f, :latitude %>
+    </div>
+
+    <div class="mb-2">
+      <%= label f, :longitude %>
+      <%= text_input f, :longitude %>
+      <%= error_tag f, :longitude %>
     </div>
 
     <div class="mb-3">

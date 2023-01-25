@@ -17,6 +17,8 @@ defmodule CityfoodWeb.Router do
   scope "/", CityfoodWeb do
     pipe_through :browser
 
+    get "/pages", PageController, :index
+
     live "/", FoodTruckLive.Index, :index
     live "/food_trucks", FoodTruckLive.Index, :index
     live "/food_trucks/new", FoodTruckLive.Index, :new

@@ -28,26 +28,36 @@
     </div>
   </div>
 
+  <%= if @live_action in [:new, :edit] do %>
+    <div class="medal">
+    <.modal return_to={Routes.food_truck_index_path(@socket, :index)}>
+      <.live_component
+        module={CityfoodWeb.FoodTruckLive.FormComponent}
+        id={@food_truck.id || :new}
+        title={@page_title}
+        action={@live_action}
+        food_truck={@food_truck}
+        return_to={Routes.food_truck_index_path(@socket, :index)}
+      />
+    </.modal>
+    </div>
+  <% end %>
+
+  <span><%= live_patch "New Food truck", to: Routes.food_truck_index_path(@socket, :new) %></span>
+
+  <%= if @view =="map_view" do %>
   <div class={show(@view, "map_view")}>  
     <div id="map-container">
       <div id="map" phx-update="ignore" phx-hook="Map" data-food_trucks={format(@food_trucks)} data-search_address_lat_lng={nil}></div>
     </div>
   </div>
 
+  <%end %>
+
+  <%=if @view=="list_view" do %>
   <div class={show(@view, "list_view")}>
     <div class="w-100 p-2">
-    <%= if @live_action in [:new, :edit] do %>
-      <.modal return_to={Routes.food_truck_index_path(@socket, :index)}>
-        <.live_component
-          module={CityfoodWeb.FoodTruckLive.FormComponent}
-          id={@food_truck.id || :new}
-          title={@page_title}
-          action={@live_action}
-          food_truck={@food_truck}
-          return_to={Routes.food_truck_index_path(@socket, :index)}
-        />
-      </.modal>
-    <% end %>
+
     <table>
       <thead>
         <tr>
@@ -93,12 +103,13 @@
         <% end %>
       </tbody>
     </table>
-    <span><%= live_patch "New Food truck", to: Routes.food_truck_index_path(@socket, :new) %></span>
+
     </div>
   </div>
+  <%end %>
 </div>
 
-
 <script
-    src="https://maps.googleapis.com/maps/api/js?key=#{@key}&callback=initMap&v=weekly"
-  ></script>
+  src="https://maps.googleapis.com/maps/api/js?key=#{@key}&callback=initMap&v=weekly"
+></script>
+

@@ -32,7 +32,6 @@ defmodule CityfoodWeb.LiveHelpers do
       <div
         id="modal-content"
         class="phx-modal-content fade-in-scale"
-        phx-hook="BsModal"
         phx-click-away={JS.dispatch("click", to: "#close")}
         phx-window-keydown={JS.dispatch("click", to: "#close")}
         phx-key="escape"
