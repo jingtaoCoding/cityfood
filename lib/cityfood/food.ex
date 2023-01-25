@@ -21,6 +21,30 @@ defmodule Cityfood.Food do
     Repo.all(FoodTruck)
   end
 
+  def list_food_trucks_with_filters(filters) do
+    FoodTruck
+    |> filter_by_city(filters)
+    |> filter_by_coldtruck(filters)
+    |> filter_by_dayofweekstr(filters)
+    |> Repo.all()
+  end
+
+  defp filter_by_city(query, %{"city" => city_id}), do: where(query, [ft], ft.city_id == ^city_id)
+  defp filter_by_city(query, _), do: query
+
+  defp filter_by_coldtruck(query, %{"city" => city_id, "coldtruck" => coldtruck}) do
+    query
+    |> where([ft], ft.city_id == ^city_id)
+    |> where([ft], ft.coldtruck == ^coldtruck)
+  end
+
+  defp filter_by_coldtruck(query, _), do: query
+
+  defp filter_by_dayofweekstr(query, %{"dayofweekstr" => dayofweekstr}),
+    do: where(query, [ft], ft.dayofweekstr == ^dayofweekstr)
+
+  defp filter_by_dayofweekstr(query, _), do: query
+
   @doc """
   Gets a single food_truck.
 
@@ -52,7 +76,6 @@ defmodule Cityfood.Food do
   def create_food_truck(attrs \\ %{}) do
     %FoodTruck{}
     |> FoodTruck.changeset(attrs)
-    |> IO.inspect()
     |> Repo.insert()
   end
 

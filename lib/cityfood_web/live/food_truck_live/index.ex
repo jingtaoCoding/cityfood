@@ -1,19 +1,39 @@
 defmodule CityfoodWeb.FoodTruckLive.Index do
   use CityfoodWeb, :live_view
-
+  alias CityFood.Utils
+  alias Cityfood.Cities
   alias Cityfood.Food
   alias Cityfood.Food.FoodTruck
 
+  @cols [
+    {"locationid", "Location ID"},
+    {"coldtruck", "Cold Truck"},
+    {"dayofweekstr", "Day of Week"},
+    {"starttime", "Start Time"},
+    {"endtime", "End Time"},
+    {"location", "Location"},
+    {"locationdesc", "Location Desc"},
+    {"optionaltext", "Optional Text"},
+    {"block", "Block"},
+    {"applicant", "Applicant"}
+  ]
+  @default_city "San Francisco"
+  @filters %{city: @default_city, dayofweekstr: "", coldtruck: ""}
   @impl true
   def mount(_params, _session, socket) do
-    IO.inspect(socket)
-    food_trucks = if connected?(socket), do: Food.list_food_trucks(), else: []
+    city = Cities.get_city_by_name!(@default_city)
+    cities = if connected?(socket), do: Cities.list_cities(), else: []
+    food_trucks = if connected?(socket), do: list_food_trucks(), else: []
     key = Application.get_env(:geocoder, :worker)[:key]
 
     {:ok,
      socket
+     |> assign(:city, city)
+     |> assign(:cities, cities)
      |> assign(:food_trucks, food_trucks)
      |> assign(:view, "list_view")
+     |> assign(:cols, @cols)
+     |> assign(:filters, @filters)
      |> assign(:key, key)}
   end
 
@@ -48,13 +68,32 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
     {:noreply, assign(socket, :food_trucks, list_food_trucks())}
   end
 
-  @impl true
   def handle_event("change-view", %{"view" => view}, socket) do
     {:noreply, assign(socket, :view, view)}
   end
 
+  def handle_event("filters", params, socket) do
+    {city, filters} = params |> Utils.compact() |> Map.pop("city")
+    city = if is_nil(city), do: socket.assigns.city.id, else: String.to_integer(city)
+    filters = Map.put(filters, "city", city) |> IO.inspect()
+    {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
+  end
+
+  def handle_event("clear", params, socket) do
+    food_trucks = list_food_trucks()
+
+    {:noreply,
+     socket
+     |> assign(:food_trucks, food_trucks)
+     |> assign(:filters, @filters)}
+  end
+
   defp list_food_trucks do
     Food.list_food_trucks()
+  end
+
+  defp list_food_trucks_with_filters(filters) do
+    Food.list_food_trucks_with_filters(filters)
   end
 
   def show(target_view, current_view) do

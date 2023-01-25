@@ -1,27 +1,27 @@
 
 var FoodTruck = function (arg) {
-    this.city_id = arg.city_id
-    this.dayorder = arg.dayorder
-    this.dayofweekstr = arg.dayofweekstr
-    this.starttime = arg.starttime
-    this.endtime = arg.endtime
-    this.permit = arg.permit
-    this.location = arg.location
-    this.locationdesc = arg.locationdesc
-    this.optionaltext = arg.optionaltext
-    this.locationid = arg.locationid
-    this.start24 = arg.start24
-    this.end24 = arg.end24
-    this.cnn = arg.cnn
-    this.block = arg.blocks
-    this.lot = arg.lot 
-    this.coldtruck = arg.coldtruck
-    this.applicant = arg.applicant
-    this.x = arg.x
-    this.y = arg.y
-    this.latitude = arg.latitude
-    this.longitude = arg.longitude
-    this.location_2 = arg.location_2
+  this.city_id = arg.city_id
+  this.dayorder = arg.dayorder
+  this.dayofweekstr = arg.dayofweekstr
+  this.starttime = arg.starttime
+  this.endtime = arg.endtime
+  this.permit = arg.permit
+  this.location = arg.location
+  this.locationdesc = arg.locationdesc
+  this.optionaltext = arg.optionaltext
+  this.locationid = arg.locationid
+  this.start24 = arg.start24
+  this.end24 = arg.end24
+  this.cnn = arg.cnn
+  this.block = arg.blocks
+  this.lot = arg.lot
+  this.coldtruck = arg.coldtruck
+  this.applicant = arg.applicant
+  this.x = arg.x
+  this.y = arg.y
+  this.latitude = arg.latitude
+  this.longitude = arg.longitude
+  this.location_2 = arg.location_2
 }
 
 var LatLng = function (arg) {
@@ -30,7 +30,7 @@ var LatLng = function (arg) {
 }
 var Hooks = {}
 Hooks.Map = {
-   // Initializes the Google Map
+  // Initializes the Google Map
   initMap() {
     const myLatLng = new LatLng({ lat: 37.7749, lng: -122.4194 })
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -52,11 +52,11 @@ Hooks.Map = {
       const marker = new google.maps.Marker({
         position: { lat: parseFloat(foodTruck.latitude), lng: parseFloat(foodTruck.longitude) },
         map,
-        icon: (foodTruck.coldtruck == "N")? "images/icon-green-48.png" : "images/icon-blue-48.png",
+        icon: (foodTruck.coldtruck == "N") ? "images/icon-green-48.png" : "images/icon-blue-48.png",
         // icon: "https://icons.iconarchive.com/icons/icons-land/vista-map-markers/16/Map-Marker-Ball-Azure-icon.png"
       })
 
-      const infowindow = new google.maps.InfoWindow({content: this.genInfo(foodTruck)})
+      const infowindow = new google.maps.InfoWindow({ content: this.genInfo(foodTruck) })
 
       marker.addListener("click", () => {
         infowindow.open({
@@ -78,21 +78,21 @@ Hooks.Map = {
       `<li> Open: ${c.starttime}</li>`,
       `<li> Close: ${c.endtime} </li>`,
       `<li> ColdTruck: ${c.coldtruck} </li>`,
+      `<li> Day of Week: ${c.dayofweekstr} </li>`,
       "</ul>"
-    ].join("") 
-  
+    ].join("")
+
     return str;
   },
 
-  /**
- * Returns a latitude and longitude geocoded from the search address bar
- * @returns {LatLng}
- */
+
+  //  Returns a latitude and longitude geocoded from the search address bar
+  //  @returns {LatLng}
   searchAddressLatLng() { return new LatLng(JSON.parse(this.el.dataset.search_address_lat_lng)) },
-  
-  /**
-   * Updates the Google Map when some address is searched
-   */
+
+
+  //  Updates the Google Map when some address is searched
+
   searchMap() {
     const myLatLng = this.searchAddressLatLng();
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -102,11 +102,8 @@ Hooks.Map = {
     this.addSearchedAddressMarker(map, myLatLng)
     this.placeFoodTruckMarkers(map)
   },
-  /**
-   * Adds marker for an address entered in the search
-   * @param {*} map 
-   * @param {LatLng} myLatLng
-   */
+
+  //  Adds marker for an address entered in the search
   addSearchedAddressMarker(map, myLatLng) {
     const searchedInfoWindow = new google.maps.InfoWindow({
       content: `Food nearby?`,
@@ -131,19 +128,33 @@ Hooks.Map = {
   },
 
 
-  /**
-   * Built in mounted method used to initilize the map
-   * Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
-   */
+  // Update 
+  updateMapMarker() {
+    // this.initMap()
+    const myLatLng = new LatLng({ lat: 37.7622, lng: - 122.412531 })
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 14,
+      center: myLatLng,
+    })
+    this.placeFoodTruckMarkers(map)
+  },
+
+  //  Built in mounted method used to initilize the map
+  //  Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
+
   mounted() {
     window.initMap = this.initMap()
   },
-  /**
-   * Built in updated method used when updating map
-   * Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
-   */
+
+  //  Built in updated method used when updating map
+  //  Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
   updated() {
-    this.searchMap()
+    // this.searchMap()
+    this.updateMapMarker()
+  },
+
+  beforeUpdate() {
+    this.placeFoodTruckMarkers()
   }
 }
 export default Hooks;
