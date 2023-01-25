@@ -1,19 +1,28 @@
 # Cityfood
+This app is build to show food-trucks information in SF area.  It is built using Phoenix LiveView. 
+
+  ![map-view](./docs/map_view.jpg)
+
+  ![list-view](./docs/list_view.jpg)
 
 ## Preoject Scope & Features
 - DB is using postgress
-- Inital data is imported by api call to [json-api-data](https://data.sfgov.org/resource/jjew-r69b.json), which is initalized by [DB seed](./priv/repo/seeds.exs). This can also be refreshed by manually calling `DataFetcher.refresh_data()`.
+- Imported data original from [json-api-data](https://data.sfgov.org/resource/jjew-r69b.json), which is initalized by [DB seed](./priv/repo/seeds.exs). This can also be refreshed by manually calling `DataFetcher.refresh_data()`.
 - [Home page](http://localhost:4001/) is the list view of all food-trucks. 
-  ![list-view-landing-page](./docs/list_view.jpg)
   - filters: cities, cold-truck or not, day-of-week
   - clear all
   - `map view`
-  ![list-view-landing-page](./docs/map_view.jpg)
+
 - Other genernic operations, view/edit/delete of cities & food-trucks. 
 
-
 ## Setup 
-To start your Phoenix server:
+
+### To setup google map api key
+Add this to one of the config files: 
+- `config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")`
+- save google-map-api key in env variable "GOOGLE_MAP_API_KEY"
+
+### To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
