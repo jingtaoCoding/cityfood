@@ -10,8 +10,9 @@ defmodule Cityfood.DataFetcher do
     end
   end
 
+  @sf_city "San Francisco"
   def refresh_data do
-    city = Cities.get_city_by_name!("San Francisco")
+    city = Cities.get_city_by_name!(@sf_city)
     data = get()
 
     trucks = Enum.map(data, &(&1 |> Map.put("city_id", city.id) |> Food.create_food_truck()))
