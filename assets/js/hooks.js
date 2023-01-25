@@ -79,7 +79,9 @@ Hooks.Map = {
       `<li> Close: ${c.endtime} </li>`,
       `<li> ColdTruck: ${c.coldtruck} </li>`,
       `<li> Day of Week: ${c.dayofweekstr} </li>`,
-      "</ul>"
+      `<li> Day of Week: ${c.dayofweekstr} </li>`,
+      `<li> Food: <p style="color:blue"> ${c.optionaltext} </p></li>`,
+      `</ul>`
     ].join("")
 
     return str;
