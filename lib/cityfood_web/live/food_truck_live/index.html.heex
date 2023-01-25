@@ -86,7 +86,7 @@
   <%= if @view =="map_view" do %>
   <div class={show(@view, "map_view")}>  
     <div id="map-container">
-      <div id="map" phx-update="ignore" phx-hook="Map" data-food_trucks={format(@food_trucks)} data-search_address_lat_lng={nil}></div>
+      <div id="map" phx-update="ignore" phx-hook="Map" data-food_trucks={format(@food_trucks)} data-city={encode(@city)} data-search_address_lat_lng={nil}></div>
     </div>
   </div>
   <%end %>

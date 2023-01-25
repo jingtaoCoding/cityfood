@@ -29,6 +29,15 @@
     <%= @city.country %>
   </li>
 
+  <li>
+    <strong>Lan:</strong>
+    <%= @city.lan %>
+  </li>
+
+  <li>
+    <strong>Lon:</strong>
+    <%= @city.lon %>
+  </li>
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.city_show_path(@socket, :edit, @city), class: "button" %></span> |

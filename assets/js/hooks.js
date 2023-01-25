@@ -32,12 +32,18 @@ var Hooks = {}
 Hooks.Map = {
   // Initializes the Google Map
   initMap() {
-    const myLatLng = new LatLng({ lat: 37.7749, lng: -122.4194 })
+    const myLatLng = this.cityCenter;
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 12,
+      zoom: 11,
       center: myLatLng,
     })
     this.placeFoodTruckMarkers(map)
+  },
+
+  cityCenter(){
+    const city = JSON.parse(this.el.dataset.city)
+    const myLatLng = new LatLng({ lat: city.lan, lng: city.lon })
+    return myLatLng
   },
 
   foodTrucks() {
@@ -131,11 +137,10 @@ Hooks.Map = {
 
 
   // Update 
-  updateMapMarker() {
+  updateMapMarker(myLatLng) {
     // this.initMap()
-    const myLatLng = new LatLng({ lat: 37.7622, lng: - 122.412531 })
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 14,
+      zoom: 12,
       center: myLatLng,
     })
     this.placeFoodTruckMarkers(map)
@@ -152,11 +157,12 @@ Hooks.Map = {
   //  Docs: https://hexdocs.pm/phoenix_live_view/js-interop.html#client-hooks-via-phx-hook
   updated() {
     // this.searchMap()
-    this.updateMapMarker()
+    let cityCenter = this.cityCenter();
+    this.updateMapMarker(cityCenter)
   },
 
   beforeUpdate() {
-    this.placeFoodTruckMarkers()
+    // this.placeFoodTruckMarkers()
   }
 }
 export default Hooks;

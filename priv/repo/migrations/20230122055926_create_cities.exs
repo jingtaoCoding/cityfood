@@ -6,6 +6,8 @@ defmodule Cityfood.Repo.Migrations.CreateCities do
       add(:id, :bigserial, primary_key: true)
       add :name, :string
       add :country, :string
+      add :lan, :float
+      add :lon, :float
 
       timestamps()
     end

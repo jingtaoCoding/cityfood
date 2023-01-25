@@ -5,6 +5,8 @@ defmodule Cityfood.Cities.City do
   schema "cities" do
     field :country, :string
     field :name, :string
+    field :lan, :float
+    field :lon, :float
 
     timestamps()
   end
@@ -12,7 +14,7 @@ defmodule Cityfood.Cities.City do
   @doc false
   def changeset(city, attrs) do
     city
-    |> cast(attrs, [:name, :country])
+    |> cast(attrs, [:name, :country, :lan, :lon])
     |> validate_required([:name, :country])
   end
 end

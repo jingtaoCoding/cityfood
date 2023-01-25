@@ -73,10 +73,22 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
   end
 
   def handle_event("filters", params, socket) do
-    {city, filters} = params |> Utils.compact() |> Map.pop("city")
-    city = if is_nil(city), do: socket.assigns.city.id, else: String.to_integer(city)
-    filters = Map.put(filters, "city", city) |> IO.inspect()
-    {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
+    {city_id, filters} = params |> Utils.compact() |> Map.pop("city")
+
+    if is_nil(city_id) do
+      city_id = socket.assigns.city.id
+      filters = Map.put(filters, "city", city_id)
+      {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
+    else
+      city_id = String.to_integer(city_id)
+      city = city = Cities.get_city!(city_id) |> IO.inspect()
+      
+      filters = Map.put(filters, "city", city_id)
+      socket = assign(socket, :city, city)
+     {:noreply, assign(socket, :food_trucks, list_food_trucks_with_filters(filters))}
+    end
+
+
   end
 
   def handle_event("clear", params, socket) do
@@ -134,5 +146,9 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
         ]))
     )
     |> Jason.encode!()
+  end
+
+  def encode(city) do
+    city |> Map.from_struct() |> Map.delete(:__meta__) |> Jason.encode!() |> IO.inspect()
   end
 end

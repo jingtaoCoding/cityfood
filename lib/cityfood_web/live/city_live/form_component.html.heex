@@ -21,6 +21,18 @@
       <%= error_tag f, :country %>
     </div>
 
+    <div class="mb-2">
+      <%= label f, :lan %>
+      <%= text_input f, :lan %>
+      <%= error_tag f, :lan %>
+    </div>
+
+    <div class="mb-2">
+      <%= label f, :lon %>
+      <%= text_input f, :lon %>
+      <%= error_tag f, :lon %>
+    </div>
+
     <div type="button">
       <%= submit "Save", phx_disable_with: "Saving..." %>
     </div>
