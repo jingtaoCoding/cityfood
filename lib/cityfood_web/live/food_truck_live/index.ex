@@ -25,8 +25,7 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
     cities = if connected?(socket), do: Cities.list_cities(), else: []
     food_trucks = if connected?(socket), do: list_food_trucks(), else: []
 
-    {
-      :ok,
+    socket =
       socket
       |> assign(:city, city)
       |> assign(:cities, cities)
@@ -34,7 +33,10 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
       |> assign(:view, "list_view")
       |> assign(:cols, @cols)
       |> assign(:filters, @filters)
-    }
+      |> assign(:food, "")
+      |> assign(:loading, false)
+
+    {:ok, socket}
   end
 
   @impl true
@@ -78,13 +80,28 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
     city = Cities.get_city_by_name!(filters.city)
     params = filters |> Map.put(:city_id, city.id) |> Utils.compact()
 
-    socket =
-      socket
-      |> assign(:city, city)
-      |> assign(:filters, filters)
-      |> assign(:food_trucks, list_food_trucks_with_filters(params))
+    case list_food_trucks_with_filters(params) do
+      [] ->
+        socket =
+          socket
+          |> clear_flash()
+          |> put_flash(:info, "No food-truck matching \"#{Jason.encode!(filters)}\"")
+          |> assign(:filters, filters)
+          |> assign(:city, city)
+          |> assign(:food_trucks, [])
 
-    {:noreply, socket}
+        {:noreply, socket}
+
+      food_trucks ->
+        socket =
+          socket
+          |> clear_flash()
+          |> assign(:filters, filters)
+          |> assign(:city, city)
+          |> assign(:food_trucks, food_trucks)
+
+        {:noreply, socket}
+    end
   end
 
   def handle_event("clear", params, socket) do
@@ -92,10 +109,39 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
 
     socket =
       socket
+      |> clear_flash()
       |> assign(:filters, @filters)
       |> assign(:food_trucks, food_trucks)
 
     {:noreply, socket}
+  end
+
+  def handle_event("food-search", %{"food" => food}, socket) do
+    send(self(), {:run_food_search, food})
+
+    socket =
+      socket
+      |> clear_flash()
+      |> assign(food: food, loading: true)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:run_food_search, food}, socket) do
+    case Food.search_food_trucks_by_food(food) do
+      [] ->
+        socket =
+          socket
+          |> clear_flash()
+          |> put_flash(:info, "No food-truck matching \"#{food}\"")
+          |> assign(food_trucks: [], loading: false)
+
+        {:noreply, socket}
+
+      food_trucks ->
+        socket = assign(socket, food_trucks: food_trucks, loading: false)
+        {:noreply, socket}
+    end
   end
 
   defp list_food_trucks do

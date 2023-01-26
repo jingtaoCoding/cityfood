@@ -2,6 +2,8 @@
 This app is build to show food-trucks information in SF area.  It is built using Phoenix LiveView. 
 
   ![map-view](./docs/map_view.jpg)
+  
+  ![search-food](./docs/search_food.jpg)
 
   ![list-view](./docs/list_view.jpg)
 
@@ -18,9 +20,12 @@ This app is build to show food-trucks information in SF area.  It is built using
 ## Setup 
 
 ### To setup google map api key
-Add this to one of the config files: 
-- `config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")`
-- save google-map-api key in env variable "GOOGLE_MAP_API_KEY"
+
+- Make sure you have this in `config.exs` 
+```
+config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")
+```
+- Save you google-map-api key in this env variable: `GOOGLE_MAP_API_KEY`
 
 ### To start your Phoenix server:
 
