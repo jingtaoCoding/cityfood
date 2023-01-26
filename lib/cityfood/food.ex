@@ -21,6 +21,14 @@ defmodule Cityfood.Food do
     Repo.all(FoodTruck)
   end
 
+  def search_food_trucks_by_food(food) do
+    like_query = "%#{food}%"
+
+    FoodTruck
+    |> where([ft], ilike(ft.optionaltext, ^like_query))
+    |> Repo.all()
+  end
+
   def list_food_trucks_with_filters(filters) do
     FoodTruck
     |> filter_by_city(filters)
