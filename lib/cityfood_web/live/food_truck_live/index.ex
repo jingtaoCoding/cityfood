@@ -30,7 +30,7 @@ defmodule CityfoodWeb.FoodTruckLive.Index do
       |> assign(:city, city)
       |> assign(:cities, cities)
       |> assign(:food_trucks, food_trucks)
-      |> assign(:view, "list_view")
+      |> assign(:view, "map_view")
       |> assign(:cols, @cols)
       |> assign(:filters, @filters)
       |> assign(:food, "")
