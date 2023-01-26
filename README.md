@@ -19,14 +19,23 @@ This app is build to show food-trucks information in SF area.  It is built using
 
 ## Setup 
 
-### To setup google map api key
+### 1. To setup google map api key
 
 - Make sure you have this in `config.exs` 
-```
-config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")
-```
+  ```
+  config :cityfood, :google_map, api_key: System.get_env("GOOGLE_MAP_API_KEY")
+  ```
 - Save you google-map-api key in this env variable: `GOOGLE_MAP_API_KEY`
 
+### 2. Install Bootstrap
+
+We need to install Bootstrap and its sole peer-dependency Popper inside the assets folder.
+  ```
+  cd assets
+  npm init -y 
+  npm i bootstrap @popperjs/core 
+  ```
+  
 ### To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
