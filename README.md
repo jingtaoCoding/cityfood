@@ -1,5 +1,5 @@
 # Cityfood
-This app is build to show food-trucks information in SF area.  It is built using Phoenix LiveView. 
+This app is built to show food-trucks information in SF area.  It is built using Phoenix LiveView. 
 
   ![map-view](./docs/map_view.jpg)
   
