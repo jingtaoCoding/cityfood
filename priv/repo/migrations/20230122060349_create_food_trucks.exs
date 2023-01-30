@@ -31,5 +31,6 @@ defmodule Cityfood.Repo.Migrations.CreateFoodTrucks do
     end
 
     create(index(:food_trucks, [:city_id, :coldtruck]))
+    create(unique_index(:food_trucks, [:locationid, :dayorder]))
   end
 end

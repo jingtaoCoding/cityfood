@@ -14,6 +14,6 @@ defmodule Cityfood.DataFetcher do
     city = Cities.get_city_by_name!(@sf_city)
     data = get()
 
-    trucks = Enum.map(data, &(&1 |> Map.put("city_id", city.id) |> Food.create_food_truck()))
+    trucks = Enum.map(data, &(&1 |> Map.put("city_id", city.id) |> Food.upsert_food_truck()))
   end
 end
