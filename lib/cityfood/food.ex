@@ -90,6 +90,30 @@ defmodule Cityfood.Food do
   end
 
   @doc """
+  Update or create a new record
+  """
+  def upsert_food_truck(%{"locationid" => locationid, "dayorder" => dayorder} = attrs) do
+    conflict_target = [:locationid, :dayorder]
+    on_conflict_changes = [updated_at: DateTime.utc_now()]
+
+    on_conflict =
+      FoodTruck
+      |> where([f], f.locationid == ^locationid and f.dayorder == ^dayorder)
+      |> update(set: ^on_conflict_changes)
+
+    food_truck =
+      %FoodTruck{}
+      |> FoodTruck.changeset(attrs)
+      |> Repo.insert!(
+        on_conflict: on_conflict,
+        conflict_target: conflict_target,
+        returning: true
+      )
+
+    {:ok, food_truck}
+  end
+
+  @doc """
   Updates a food_truck.
 
   ## Examples
